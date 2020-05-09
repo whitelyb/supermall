@@ -22,6 +22,7 @@ export default {
   methods: {
     tabClick(index) {
       this.currentIndex = index
+      this.$emit('tabClick', index)
     }
   },
   props: {
@@ -35,11 +36,13 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 .tab-control {
   display: flex;
   text-align: center;
   font-size: 14px;
+  background-color: #fff;
+  z-index: 9;
 }
 .tab-control-item {
   flex: 1;

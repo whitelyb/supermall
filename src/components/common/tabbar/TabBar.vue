@@ -10,7 +10,7 @@ export default {
 };
 </script>
 
-<style scope>
+<style scoped>
 #tab-bar {
   position: fixed;
   bottom: 0;
