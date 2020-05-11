@@ -42,7 +42,7 @@ import Scroll from "components/common/scroll/Scroll"
 import BackTop from 'components/content/backtop/BackTop'
 
 import { getHomeMultidata, getHomeGoods } from "network/home"
-import { debounce } from 'common/utils'
+import { itemListenerMixin } from 'common/mixin'
 
 export default {
   name: "Home",
@@ -60,9 +60,9 @@ export default {
       isShowTabControl: false,
       tabControlOffsetTop: 0,
       saveY: 0
-
     }
   },
+  mixins: [itemListenerMixin],
   components: {
     HomeSwiper,
     RecommendView,
@@ -80,7 +80,11 @@ export default {
     this.$refs.scroll.refresh()
   },
   deactivated() {
+    // 1.保存 y值
     this.saveY = this.$refs.scroll.scroll.y
+
+    // 2.当页面跳转到其他页面时就取消全局事件监听
+    this.$bus.$off('itemImgLoad', this.itemImgListener)
   },
 
   created() {
@@ -89,15 +93,6 @@ export default {
     this.getHomeGoods("pop");
     this.getHomeGoods("new");
     this.getHomeGoods("sell");
-  },
-  mounted() {
-    // 利用防抖动函数可以减少此函数被执行多次
-    const refresh = debounce(this.$refs.scroll.refresh, 200)
-     // 监听item 中图片加载完成
-    this.$bus.$on('itemImgLoad', () => {
-      refresh() 
-    })
-    
   },
   computed: {
     showGoods() {
