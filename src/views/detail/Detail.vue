@@ -129,7 +129,7 @@ export default {
   },
   methods: {
     imgLoad() {
-      this.$refs.scroll.refresh()
+      this.$refs.scroll.refresh()      
       this.getInfoTopY()      
     },
     titleClick(index) {      
@@ -173,8 +173,7 @@ export default {
 
       // 调用 vuex 里面的 actions
       this.$store.dispatch('addCart', obj).then(res => {
-        console.log(res);
-        
+        this.$toast.show(res, 1500)                
       })
 
     }

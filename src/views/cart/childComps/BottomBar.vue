@@ -3,7 +3,7 @@
     <CheckButton class="select-all" @click.native="checkBtnClick" v-model="isSelectAll"></CheckButton>
     <span>全选</span>
     <span class="total-price">合计: ¥{{ totalPrice }}</span>
-    <span class="buy-product">去计算({{ cartCount }})</span>
+    <span class="buy-product" @click="calcClick">去计算({{ cartCount }})</span>
   </div>
 </template>
 
@@ -38,6 +38,7 @@
       }
     },
     methods: {
+      // 全选按钮
       checkBtnClick: function () {
         // 1.判断是否有未选中的按钮
         let isSelectAll = this.cartList.find(item => !item.checked);
@@ -51,6 +52,10 @@
             item.checked = false;
           });
         }
+      },
+
+      calcClick() {
+        this.$toast.show('请选择购买的商品', 1000)
       }
     }
 	}

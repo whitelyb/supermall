@@ -55,7 +55,7 @@ export default {
     display: block;
     width: 22px;
     height: 22px;
-    margin: 7px auto 0;
+    margin: 7px auto -2px;
     background: url("~assets/img/detail/detail_bottom.png") 0 0/100%;
   }
   .bar-left .service {
