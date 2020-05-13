@@ -18,13 +18,15 @@ export const backTopMixin = {
 export const itemListenerMixin = {
   data() {
     return {
-      itemImgListener: null
+      itemImgListener: null,
+      //保存防抖过得刷新函数，可以在其他地方调用
+      mixinRefresh: null
     }
   },
   mounted() {
-    let newRefresh = debounce(this.$refs.scroll.refresh, 100)
+    this.mixinRefresh = debounce(this.$refs.scroll.refresh, 100)
 
-    this.itemImgListener = () => newRefresh() 
+    this.itemImgListener = () => this.mixinRefresh()
     
      // 监听item 中图片加载完成
     this.$bus.$on('itemImgLoad', this.itemImgListener)

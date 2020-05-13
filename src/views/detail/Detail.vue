@@ -2,7 +2,7 @@
   <div id="detail">
     <detail-nav-bar @titleClick="titleClick" ref="nav" />
     <scroll class="content" ref="scroll" :probe-type="3" @scroll="contentScroll">
-      <detail-swiper :top-images="topImages" />
+      <detail-swiper :top-images="topImages" @imagesLoad="imagesLoad"/>
       <detail-base-info :goods="goods" />
       <detail-shop-info :shop="shop" />
       <detail-goods-info :detail-info="detailInfo" @imgLoad="imgLoad" />
@@ -101,15 +101,17 @@ export default {
       })
 
       // 4.给 getInfoTopY 赋值
-      this.getInfoTopY = debounce(() => {
-        this.infoTopYs = []
-        this.infoTopYs.push(0)
-        this.infoTopYs.push(this.$refs.params.$el.offsetTop - 44)
-        this.infoTopYs.push(this.$refs.comment.$el.offsetTop - 44)
-        this.infoTopYs.push(this.$refs.recommend.$el.offsetTop - 44)
-        this.infoTopYs.push(Number.MAX_VALUE)
-        // console.log(this.infoTopYs);
-      }, 1000)
+      this.$nextTick(() => {
+        this.getInfoTopY = debounce(() => {
+          this.infoTopYs = []
+          this.infoTopYs.push(0)
+          this.infoTopYs.push(this.$refs.params.$el.offsetTop - 44)
+          this.infoTopYs.push(this.$refs.comment.$el.offsetTop - 44)
+          this.infoTopYs.push(this.$refs.recommend.$el.offsetTop - 44)
+          this.infoTopYs.push(Number.MAX_VALUE)
+          // console.log(this.infoTopYs);
+        }, 50)
+      })
 
       // this.$nextTick(() => {
       //   // 根据最新的数据，对应的DOM是已经渲染出来了
@@ -128,9 +130,25 @@ export default {
     this.$bus.$off('itemImgLoad', this.itemImgListener)
   },
   methods: {
+    // 监听detailGoodsInfo组件中的图片是否加载完毕
     imgLoad() {
-      this.$refs.scroll.refresh()      
-      this.getInfoTopY()      
+      // 1.使用mixin中的保存的防抖动函数
+        this.mixinRefresh(); 
+      
+      // 2.每张图片加载完后调用getThemeTopY赋值
+       this.$nextTick(() => {
+          this.getInfoTopY();
+        })   
+    },
+    // 监听轮播图图片加载完毕
+    imagesLoad() {
+       // .1使用mixin中的保存的防抖动函数
+        this.mixinRefresh();   
+      
+      // 2.每张图片加载完后调用getThemeTopY赋值
+       this.$nextTick(() => {
+          this.getInfoTopY();
+        })   
     },
     titleClick(index) {      
       this.$refs.scroll.scrollTo(0, -this.infoTopYs[index], 200)

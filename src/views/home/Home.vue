@@ -76,13 +76,14 @@ export default {
   },
 
   activated() {
-    this.$refs.scroll.scrollTo(0, this.saveY, 0)
+    this.$refs.scroll.scrollTo(0, this.saveY, 500)
+
     this.$refs.scroll.refresh()
   },
   deactivated() {
     // 1.保存 y值
     this.saveY = this.$refs.scroll.scroll.y
-
+    
     // 2.当页面跳转到其他页面时就取消全局事件监听
     this.$bus.$off('itemImgLoad', this.itemImgListener)
   },

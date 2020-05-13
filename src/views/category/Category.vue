@@ -33,7 +33,7 @@
 
   import {getCategory, getSubcategory, getCategoryDetail} from "network/category";
   import {POP, SELL, NEW} from "common/const";
-  import {tabControlMixin, backTopMixin} from "common/mixin";
+  import {tabControlMixin, backTopMixin, itemListenerMixin} from "common/mixin";
 
   export default {
 		name: "Category",
@@ -46,7 +46,7 @@
       TabContentCategory,
       TabContentDetail
     },
-    mixins: [tabControlMixin, backTopMixin],
+    mixins: [tabControlMixin, backTopMixin, itemListenerMixin],
     data() {
 		  return {
 		    categories: [],
@@ -118,7 +118,8 @@
         this._getSubcategories(index)
       },
       imgLoad() {        
-        this.$refs.scroll.refresh()
+        // 1.使用mixin中的保存的防抖动函数
+        this.mixinRefresh(); 
       },
       contentScroll(position) {
         this.showBackTop = (-position.y) > 1000
