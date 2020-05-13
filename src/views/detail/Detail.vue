@@ -68,6 +68,7 @@ export default {
     BackTop
   },
   created() {
+    
     // 1.保存传入的 iid
     this.iid = this.$route.params.iid
 

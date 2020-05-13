@@ -3,10 +3,10 @@
     <div class="item-selector">
       <CheckButton @checkBtnClick="checkedChange" v-model="itemInfo.checked"></CheckButton>
     </div>
-    <div class="item-img">
+    <div class="item-img" @click="showDetail">
       <img :src="itemInfo.imgUrl" alt="商品图片">
     </div>
-    <div class="item-info">
+    <div class="item-info" @click="showDetail">
       <div class="item-title">{{itemInfo.title}}</div>
       <div class="item-desc">商品描述: {{itemInfo.desc}}</div>
       <div class="info-bottom">
@@ -33,6 +33,10 @@
     methods: {
       checkedChange() {
         this.itemInfo.checked = !this.itemInfo.checked;
+      },
+
+      showDetail() {
+        this.$router.push("/detail/" + this.itemInfo.iid)
       }
     }
   }
